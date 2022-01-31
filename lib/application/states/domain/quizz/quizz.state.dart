@@ -12,26 +12,33 @@ abstract class QuizzModel with Store {
   final _listaQuestoes = GetIt.I.get<ListaQuestoes>();
 
   @observable
+  int? id;
+
+  @observable
   int _numeroQuestao = 0;
 
   @observable
   bool completo = false;
 
   @observable
-  List<Resposta> respostas = [];
+  List<RespostaQuizz>? respostas = [];
 
   @computed
   Questao get questaoAtual => _listaQuestoes.questoes[_numeroQuestao];
 
+  @computed
+  bool get ultimaQuestao => _numeroQuestao == _listaQuestoes.questoes.length - 1;
+
   @action
   void proximaQuestao(bool resposta) {
     if (completo) return;
-    if (_numeroQuestao == _listaQuestoes.questoes.length - 1) {
+    if (respostas == null) respostas = [];
+    if (ultimaQuestao) {
       completo = true;
-      respostas.add(Resposta(questaoAtual.id, resposta));
+      respostas!.add(RespostaQuizz(questaoAtual.id!, resposta));
       return;
     }
-    respostas.add(Resposta(questaoAtual.id, resposta));
+    respostas!.add(RespostaQuizz(questaoAtual.id!, resposta));
     _numeroQuestao++;
   }
 
@@ -41,4 +48,6 @@ abstract class QuizzModel with Store {
     completo = false;
     respostas = [];
   }
+
+  QuizzModel([this.id, this.respostas]);
 }

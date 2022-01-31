@@ -1,7 +1,8 @@
-class Resposta {
+class RespostaQuizz {
   int? id;
-  int id_question;
+  int? idQuizz;
+  int idQuestao;
   bool resposta;
 
-  Resposta(this.id_question, this.resposta, [this.id]);
+  RespostaQuizz(this.idQuestao, this.resposta, [this.id, this.idQuizz]);
 }

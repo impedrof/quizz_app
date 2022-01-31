@@ -16,6 +16,28 @@ mixin _$Quizz on QuizzModel, Store {
       (_$questaoAtualComputed ??= Computed<Questao>(() => super.questaoAtual,
               name: 'QuizzModel.questaoAtual'))
           .value;
+  Computed<bool>? _$ultimaQuestaoComputed;
+
+  @override
+  bool get ultimaQuestao =>
+      (_$ultimaQuestaoComputed ??= Computed<bool>(() => super.ultimaQuestao,
+              name: 'QuizzModel.ultimaQuestao'))
+          .value;
+
+  final _$idAtom = Atom(name: 'QuizzModel.id');
+
+  @override
+  int? get id {
+    _$idAtom.reportRead();
+    return super.id;
+  }
+
+  @override
+  set id(int? value) {
+    _$idAtom.reportWrite(value, super.id, () {
+      super.id = value;
+    });
+  }
 
   final _$_numeroQuestaoAtom = Atom(name: 'QuizzModel._numeroQuestao');
 
@@ -50,13 +72,13 @@ mixin _$Quizz on QuizzModel, Store {
   final _$respostasAtom = Atom(name: 'QuizzModel.respostas');
 
   @override
-  List<Resposta> get respostas {
+  List<RespostaQuizz>? get respostas {
     _$respostasAtom.reportRead();
     return super.respostas;
   }
 
   @override
-  set respostas(List<Resposta> value) {
+  set respostas(List<RespostaQuizz>? value) {
     _$respostasAtom.reportWrite(value, super.respostas, () {
       super.respostas = value;
     });
@@ -89,9 +111,11 @@ mixin _$Quizz on QuizzModel, Store {
   @override
   String toString() {
     return '''
+id: ${id},
 completo: ${completo},
 respostas: ${respostas},
-questaoAtual: ${questaoAtual}
+questaoAtual: ${questaoAtual},
+ultimaQuestao: ${ultimaQuestao}
     ''';
   }
 }

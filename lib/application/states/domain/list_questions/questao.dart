@@ -1,7 +1,7 @@
 class Questao {
-  final int id;
+  final int? id;
   final String enunciado;
   final bool resposta;
 
-  Questao(this.id, this.enunciado, this.resposta);
+  Questao(this.enunciado, this.resposta, [this.id]);
 }
