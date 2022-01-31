@@ -19,6 +19,11 @@ class _QuizzPageState extends State<QuizzPage> {
   final _quizzUseCase = GetIt.I.get<QuizzUseCase>();
   final _questoes = GetIt.I.get<ListaQuestoes>();
 
+  bool _validarQuestao(int i) {
+    return _questoes.questoes.firstWhere((element) => element.id == _quizz.respostas![i].idQuestao).resposta ==
+        _quizz.respostas![i].resposta;
+  }
+
   @override
   void initState() {
     super.initState();
@@ -56,7 +61,7 @@ class _QuizzPageState extends State<QuizzPage> {
                                   style: ButtonStyle(
                                       backgroundColor: MaterialStateProperty.all(Colors.greenAccent.shade400)),
                                   onPressed: () {
-                                    _quizz.proximaQuestao(_quizz.questaoAtual.resposta == true);
+                                    _quizz.proximaQuestao(true);
                                     if (_quizz.ultimaQuestao && _quizz.completo) {
                                       _quizzUseCase.salvarQuizz();
                                     }
@@ -72,7 +77,7 @@ class _QuizzPageState extends State<QuizzPage> {
                                 child: ElevatedButton(
                                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.redAccent)),
                                   onPressed: () {
-                                    _quizz.proximaQuestao(_quizz.questaoAtual.resposta == false);
+                                    _quizz.proximaQuestao(false);
                                     if (_quizz.ultimaQuestao && _quizz.completo) {
                                       _quizzUseCase.salvarQuizz();
                                     }
@@ -109,7 +114,9 @@ class _QuizzPageState extends State<QuizzPage> {
                         alignment: WrapAlignment.center,
                         children: [
                           for (int i = 0; i < _quizz.respostas!.length; i++)
-                            TagResposta(resposta: _quizz.respostas![i].resposta),
+                            TagResposta(
+                              resposta: _validarQuestao(i),
+                            )
                         ],
                       ),
                     ),
